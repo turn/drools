@@ -38,6 +38,19 @@
       </snapshots>
     </repository>
   </repositories>
+<distributionManagement>
+	<repository>
+		<id>turn</id>
+		<url>http://maven.turn.com/content/repositories/turn</url>
+	</repository>
+	<snapshotRepository>
+		<uniqueVersion>true</uniqueVersion>
+		<id>snapshots</id>
+		<name>Turn internal Maven repository for snapshots</name>
+		<url>http://maven.turn.com/content/repositories/snapshots</url>
+		<layout>default</layout>
+	</snapshotRepository>
+</distributionManagement>
 
   <scm>
     <connection>scm:git:git@github.com:droolsjbpm/drools.git</connection>
