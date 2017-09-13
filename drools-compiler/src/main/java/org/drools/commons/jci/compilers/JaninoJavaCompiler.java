@@ -25,16 +25,13 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.codehaus.commons.compiler.CompileException;
+import org.codehaus.commons.compiler.ErrorHandler;
+import org.codehaus.commons.compiler.Location;
+import org.codehaus.commons.compiler.WarningHandler;
 import org.codehaus.janino.ClassLoaderIClassLoader;
-import org.codehaus.janino.CompileException;
 import org.codehaus.janino.Compiler;
-import org.codehaus.janino.DebuggingInformation;
 import org.codehaus.janino.FilterWarningHandler;
-import org.codehaus.janino.Location;
-import org.codehaus.janino.WarningHandler;
-import org.codehaus.janino.Parser.ParseException;
-import org.codehaus.janino.Scanner.ScanException;
-import org.codehaus.janino.UnitCompiler.ErrorHandler;
 import org.codehaus.janino.util.StringPattern;
 import org.codehaus.janino.util.resource.Resource;
 import org.codehaus.janino.util.resource.ResourceCreator;
@@ -139,7 +136,9 @@ public final class JaninoJavaCompiler extends AbstractJavaCompiler {
                 },
                 pSettings.getSourceEncoding(),
                 false,
-                pSettings.isDebug()?DebuggingInformation.ALL:DebuggingInformation.NONE,
+                pSettings.isDebug(),
+                pSettings.isDebug(),
+                pSettings.isDebug(),
                 new FilterWarningHandler(pattern, new WarningHandler() {
                         public void handleWarning( final String pHandle, final String pMessage, final Location pLocation ) {
                             final CompilationProblem problem = new JaninoCompilationProblem(pLocation.getFileName(), pLocation, pMessage, false);
@@ -169,10 +168,6 @@ public final class JaninoJavaCompiler extends AbstractJavaCompiler {
         }
         try {
             compiler.compile(resources);
-        } catch ( ScanException e ) {
-            problems.add(new JaninoCompilationProblem(e));
-        } catch ( ParseException e ) {
-            problems.add(new JaninoCompilationProblem(e));
         } catch ( IOException e ) {
             // I'm hoping the existing compiler problems handler catches these            
         } catch ( CompileException e ) {
